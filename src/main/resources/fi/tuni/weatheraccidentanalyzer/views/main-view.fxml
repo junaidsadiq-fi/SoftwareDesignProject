@@ -85,8 +85,8 @@
                   </HBox>
                </children>
             </VBox>
-            <PieChart title="Accidents by vehicles type" GridPane.rowIndex="1" />
-            <BarChart title="Accidents by dates" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <PieChart fx:id="pieChart" title="Accidents by vehicles type" GridPane.rowIndex="1" />
+            <BarChart fx:id="barChart" title="Accidents by dates" GridPane.columnIndex="1" GridPane.rowIndex="1">
               <xAxis>
                 <CategoryAxis side="BOTTOM" />
               </xAxis>
@@ -94,7 +94,7 @@
                 <NumberAxis side="LEFT" />
               </yAxis>
             </BarChart>
-            <LineChart title="Temperature" GridPane.rowIndex="2">
+            <LineChart fx:id="lineChart" title="Temperature" GridPane.rowIndex="2">
               <xAxis>
                 <CategoryAxis side="BOTTOM" />
               </xAxis>
