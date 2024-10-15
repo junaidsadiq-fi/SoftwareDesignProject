@@ -2,6 +2,7 @@ package fi.tuni.weatheraccidentanalyzer.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import fi.tuni.weatheraccidentanalyzer.controllers.TrafficAccidentsController;
 
 public class MainController {
     @FXML
@@ -12,6 +13,7 @@ public class MainController {
     @FXML
     private void handleMonthButtonClick() {
         System.out.println("Month button clicked!");
+        TrafficAccidentsController trafficAccidentsController = new TrafficAccidentsController();
     }
 
     @FXML
