@@ -13,7 +13,7 @@ public class MainController {
     @FXML
     private void handleMonthButtonClick() {
         System.out.println("Month button clicked!");
-        TrafficAccidentsController trafficAccidentsController = new TrafficAccidentsController();
+        TrafficAccidentsController trafficAccidentsController = new TrafficAccidentsController("2009M01");
     }
 
     @FXML

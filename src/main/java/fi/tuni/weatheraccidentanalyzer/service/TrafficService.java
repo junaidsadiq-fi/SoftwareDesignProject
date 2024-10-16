@@ -5,9 +5,10 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+
 public class TrafficService {
 
-  public String getTrafficData() {
+  public String getTrafficData(String period) {
     try {
       HttpClient client = HttpClient.newHttpClient();
       String requestBody = """
@@ -17,12 +18,12 @@ public class TrafficService {
                 "selection":{
                     "filter":"item",
                     "values": [
-                        "2009M01"
+                        "%s"
                     ]
                 }
             }
         ]}
-        """;
+        """.formatted(period);
         
       HttpRequest request = HttpRequest.newBuilder()
         .uri(URI.create("https://pxdata.stat.fi/PXWeb/api/v1/en/StatFin/ton/statfin_ton_pxt_111e.px"))
