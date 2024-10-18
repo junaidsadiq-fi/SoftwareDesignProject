@@ -15,10 +15,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="1000.0" prefWidth="1920.0" style="-fx-background-color: #c3c3c3;"
-            xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="fi.tuni.weatheraccidentanalyzer.controllers.MainController">
+<?import javafx.scene.layout.StackPane?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1920.0" style="-fx-background-color: #c3c3c3;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.tuni.weatheraccidentanalyzer.controllers.MainController">
    <left>
       <VBox prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: #1b1c27;" BorderPane.alignment="CENTER">
          <children>
@@ -32,12 +30,12 @@
                   <Font size="36.0" />
                </font>
             </Label>
-            <Button fx:id="dashboardButton" mnemonicParsing="false" text="Dashboard" onAction="#handleDashboardButtonClick">
+            <Button fx:id="dashboardButton" mnemonicParsing="false" onAction="#handleDashboardButtonClick" prefHeight="39.0" prefWidth="308.0" text="Dashboard">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button fx:id="settingsButton" mnemonicParsing="false" text="Settings" onAction="#handleSettingsButtonClick">
+            <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#handleSettingsButtonClick" prefHeight="39.0" prefWidth="360.0" text="Settings">
                <font>
                   <Font size="18.0" />
                </font>
@@ -46,7 +44,7 @@
       </VBox>
    </left>
    <center>
-      <GridPane BorderPane.alignment="CENTER">
+      <GridPane hgap="10" vgap="10" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -61,46 +59,58 @@
                <children>
                   <Label alignment="CENTER" prefHeight="145.0" prefWidth="216.0" text="Dashboard">
                      <font>
-                        <Font size="36.0" />
+                        <Font name="System Bold" size="36.0" />
                      </font>
                   </Label>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox prefHeight="100.0" prefWidth="731.0" styleClass="hbox-button-group-outer">
                      <children>
-                        <Button fx:id="dayButton" mnemonicParsing="false" text="Day" onAction="#handleDayButtonClick">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="monthButton" mnemonicParsing="false" text="Month" onAction="#handleMonthButtonClick">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="yearButton" mnemonicParsing="false" text="Year" onAction="#handleYearButtonClick">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Button>
+                         <HBox styleClass="hbox-button-group-inner">
+                             <children>
+                                 <Button fx:id="dayButton" mnemonicParsing="false" onAction="#handleDayButtonClick" prefHeight="39.0" prefWidth="83.0" text="Day">
+                                     <font>
+                                         <Font size="18.0" />
+                                     </font>
+                                 </Button>
+                                 <Button fx:id="monthButton" mnemonicParsing="false" onAction="#handleMonthButtonClick" text="Month">
+                                     <font>
+                                         <Font size="18.0" />
+                                     </font>
+                                 </Button>
+                                 <Button fx:id="yearButton" mnemonicParsing="false" onAction="#handleYearButtonClick" prefHeight="39.0" prefWidth="84.0" text="Year">
+                                     <font>
+                                         <Font size="18.0" />
+                                     </font>
+                                 </Button>
+                             </children>
+                         </HBox>
                      </children>
                   </HBox>
                </children>
             </VBox>
-            <PieChart fx:id="pieChart" title="Accidents by vehicles type" GridPane.rowIndex="1" />
-            <BarChart fx:id="barChart" title="Accidents by dates" GridPane.columnIndex="1" GridPane.rowIndex="1">
-              <xAxis>
-                <CategoryAxis side="BOTTOM" />
-              </xAxis>
-              <yAxis>
-                <NumberAxis side="LEFT" />
-              </yAxis>
-            </BarChart>
-            <LineChart fx:id="lineChart" title="Temperature" GridPane.rowIndex="2">
-              <xAxis>
-                <CategoryAxis side="BOTTOM" />
-              </xAxis>
-              <yAxis>
-                <NumberAxis side="LEFT" />
-              </yAxis>
+             <!--<Label fx:id="messageLabel" text="Select a time frame" style="-fx-font-size: 20; -fx-text-fill: black;" GridPane.rowIndex="1" GridPane.columnSpan="2" visible="true"/>-->
+
+             <!--<StackPane fx:id="chartStyle" GridPane.rowIndex="1">
+                 <PieChart fx:id="pieChart" title="Accidents by vehicles type" visible="false"/>
+             </StackPane>-->
+
+             <PieChart fx:id="pieChart" title="Accidents by vehicles type" visible="false" GridPane.rowIndex="1"/>
+
+             <BarChart fx:id="barChart" title="Accidents by dates" GridPane.columnIndex="1" GridPane.rowIndex="1" visible="false">
+                 <xAxis>
+                     <CategoryAxis side="BOTTOM" />
+                 </xAxis>
+                 <yAxis>
+                     <NumberAxis side="LEFT" />
+                 </yAxis>
+             </BarChart>
+
+             <LineChart fx:id="lineChart" title="Temperature" GridPane.rowIndex="2" visible="false">
+                 <xAxis>
+                     <CategoryAxis side="BOTTOM" />
+                 </xAxis>
+                 <yAxis>
+                     <NumberAxis side="LEFT" />
+                 </yAxis>
             </LineChart>
          </children>
       </GridPane>

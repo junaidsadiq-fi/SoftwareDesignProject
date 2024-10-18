@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.LineChart;
+import javafx.scene.control.Label;
 
 public class MainController {
     @FXML
@@ -16,6 +17,8 @@ public class MainController {
     private PieChart pieChart;
     @FXML
     private LineChart<String, Number> lineChart;
+    //@FXML
+    //private Label messageLabel;
 
     private final BarChartModel barChartModel = new BarChartModel();
     private final PieChartModel pieChartModel = new PieChartModel();
@@ -32,6 +35,8 @@ public class MainController {
         barChartModel.updateBarChartForMonth(barChart);
         pieChartModel.updatePieChartForMonth(pieChart);
         lineChartModel.updateLineChartForMonth(lineChart);
+
+        setChartVisibility();
     }
 
     @FXML
@@ -40,6 +45,9 @@ public class MainController {
         barChartModel.updateBarChartForYear(barChart);
         pieChartModel.updatePieChartForYear(pieChart);
         lineChartModel.updateLineChartForYear(lineChart);
+
+        setChartVisibility();
+
     }
 
     @FXML
@@ -50,5 +58,12 @@ public class MainController {
     @FXML
     private void handleSettingsButtonClick() {
         System.out.println("Settings button clicked!");
+    }
+
+    private void setChartVisibility() {
+        //messageLabel.setVisible(false);
+        pieChart.setVisible(true);
+        barChart.setVisible(true);
+        lineChart.setVisible(true);
     }
 }
