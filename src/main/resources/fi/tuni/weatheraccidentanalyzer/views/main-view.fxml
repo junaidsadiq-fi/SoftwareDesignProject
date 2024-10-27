@@ -43,11 +43,11 @@
                      <children>
                          <HBox styleClass="hbox-button-group-inner">
                              <children>
-                                 <Button fx:id="dayButton" mnemonicParsing="false" onAction="#handleDayButtonClick" prefHeight="39.0" prefWidth="83.0" text="Day">
+                                 <!--<Button fx:id="dayButton" mnemonicParsing="false" onAction="#handleDayButtonClick" prefHeight="39.0" prefWidth="83.0" text="Day">
                                      <font>
                                          <Font size="18.0" />
                                      </font>
-                                 </Button>
+                                 </Button>-->
                                  <Button fx:id="monthButton" mnemonicParsing="false" onAction="#handleMonthButtonClick" text="Month">
                                      <font>
                                          <Font size="18.0" />

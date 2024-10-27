@@ -32,10 +32,6 @@ public class MainController {
     private final PieChartModel pieChartModel = new PieChartModel();
     private final LineChartModel lineChartModel = new LineChartModel();
 
-    @FXML
-    private void handleDayButtonClick() {
-        System.out.println("Day button clicked!");
-    }
 
     @FXML
     private void handleMonthButtonClick() {
@@ -60,7 +56,19 @@ public class MainController {
 
     @FXML
     private void handleDashboardButtonClick() {
-        System.out.println("Dashboard button clicked!");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fi/tuni/weatheraccidentanalyzer/views/main-view.fxml"));
+            Parent mainViewRoot = loader.load();
+
+            Stage stage = (Stage) dashboardButton.getScene().getWindow();
+            stage.setScene(new Scene(mainViewRoot));
+
+            String css = new File("src/main/resources/styles.css").toURI().toString();
+            stage.getScene().getStylesheets().add(css);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

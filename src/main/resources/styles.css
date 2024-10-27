@@ -20,7 +20,7 @@
 
 
 /* Normal style */
-#dayButton, #monthButton, #yearButton {
+#monthButton, #yearButton {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
     -fx-text-fill: black;
@@ -30,14 +30,14 @@
 }
 
 /* Selection style */
-#dayButton:selected, #monthButton:selected, #yearButton:selected, #dayButton:focused, #monthButton:focused, #yearButton:focused {
+#monthButton:selected, #yearButton:selected, #monthButton:focused, #yearButton:focused {
     -fx-background-color: black;
     -fx-text-fill: white;
     -fx-background-radius: 20px;
 }
 
 /* Hover style */
-#dayButton:hover, #monthButton:hover, #yearButton:hover {
+#monthButton:hover, #yearButton:hover {
     -fx-background-color: #d6d6d6; /* Slightly darker when hovered */
     -fx-background-radius: 20px;
 }
