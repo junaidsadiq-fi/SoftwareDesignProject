@@ -17,32 +17,9 @@
 
 <?import javafx.scene.layout.StackPane?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1920.0" style="-fx-background-color: #c3c3c3;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.tuni.weatheraccidentanalyzer.controllers.MainController">
-   <left>
-      <VBox prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: #1b1c27;" BorderPane.alignment="CENTER">
-         <children>
-            <Label alignment="CENTER" prefHeight="38.0" prefWidth="311.0" text="Weather Accident" textAlignment="CENTER" textFill="WHITE">
-               <font>
-                  <Font name="Roboto" size="30.0" />
-               </font>
-            </Label>
-            <Label alignment="TOP_RIGHT" prefHeight="53.0" prefWidth="273.0" text="Analyzer" textFill="WHITE">
-               <font>
-                  <Font size="36.0" />
-               </font>
-            </Label>
-            <Button fx:id="dashboardButton" mnemonicParsing="false" onAction="#handleDashboardButtonClick" prefHeight="39.0" prefWidth="308.0" text="Dashboard">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Button>
-            <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#handleSettingsButtonClick" prefHeight="39.0" prefWidth="360.0" text="Settings">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Button>
-         </children>
-      </VBox>
-   </left>
+    <left>
+        <fx:include source="sidebar.fxml"/>
+    </left>
    <center>
       <GridPane hgap="10" vgap="10" BorderPane.alignment="CENTER">
         <columnConstraints>

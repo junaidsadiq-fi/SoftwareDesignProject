@@ -9,6 +9,14 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.Label;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.control.Button;
+
+import java.io.IOException;
+import java.io.File;
 
 public class MainController {
     @FXML
@@ -17,8 +25,8 @@ public class MainController {
     private PieChart pieChart;
     @FXML
     private LineChart<String, Number> lineChart;
-    //@FXML
-    //private Label messageLabel;
+    @FXML
+    private Button dashboardButton;
 
     private final BarChartModel barChartModel = new BarChartModel();
     private final PieChartModel pieChartModel = new PieChartModel();
@@ -58,6 +66,22 @@ public class MainController {
     @FXML
     private void handleSettingsButtonClick() {
         System.out.println("Settings button clicked!");
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fi/tuni/weatheraccidentanalyzer/views/settings-view.fxml"));
+            Parent settingsRoot = loader.load();
+
+            Scene settingsScene = new Scene(settingsRoot);
+            String css = new File("src/main/resources/styles.css").toURI().toString();
+            settingsScene.getStylesheets().add(css);
+
+            Stage stage = (Stage) dashboardButton.getScene().getWindow();
+            stage.setScene(settingsScene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setChartVisibility() {
