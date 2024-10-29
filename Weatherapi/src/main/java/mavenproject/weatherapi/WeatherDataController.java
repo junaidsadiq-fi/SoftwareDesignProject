@@ -26,7 +26,6 @@ public class WeatherDataController {
                 String xmlContent = model.sendApiRequest(url);
                 model.parseAndCategorizeXML(xmlContent);
             } catch (Exception e) {
-                e.printStackTrace();
             }
         }
 

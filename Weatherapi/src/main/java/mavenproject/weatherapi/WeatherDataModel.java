@@ -33,19 +33,19 @@ public class WeatherDataModel {
     private static final DateTimeFormatter API_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     // Tulokset tallennetaan näihin listoihin
-    private List<String> temperatures = new ArrayList<>();
-    private List<String> windSpeeds = new ArrayList<>();
-    private List<String> windGusts = new ArrayList<>();
-    private List<String> windDirections = new ArrayList<>();
-    private List<String> humidities = new ArrayList<>();
-    private List<String> dewPoints = new ArrayList<>();
-    private List<String> rainAmounts = new ArrayList<>();
-    private List<String> rainIntensities = new ArrayList<>();
-    private List<String> snowDepths = new ArrayList<>();
-    private List<String> pressures = new ArrayList<>();
-    private List<String> visibilities = new ArrayList<>();
-    private List<String> cloudCoverages = new ArrayList<>();
-    private List<String> weatherPhenomena = new ArrayList<>();
+    private final List<String> temperatures = new ArrayList<>();
+    private final List<String> windSpeeds = new ArrayList<>();
+    private final List<String> windGusts = new ArrayList<>();
+    private final List<String> windDirections = new ArrayList<>();
+    private final List<String> humidities = new ArrayList<>();
+    private final List<String> dewPoints = new ArrayList<>();
+    private final List<String> rainAmounts = new ArrayList<>();
+    private final List<String> rainIntensities = new ArrayList<>();
+    private final List<String> snowDepths = new ArrayList<>();
+    private final List<String> pressures = new ArrayList<>();
+    private final List<String> visibilities = new ArrayList<>();
+    private final List<String> cloudCoverages = new ArrayList<>();
+    private final List<String> weatherPhenomena = new ArrayList<>();
 
     // API-kutsut ja tietojen haku
     public List<String> buildUrls(String place, int year, int month, List<String> selectedParameters) {
@@ -153,7 +153,6 @@ public class WeatherDataModel {
                 }
             }
         } catch (IOException | ParserConfigurationException | SAXException e) {
-            e.printStackTrace();
         }
     }
 
@@ -177,14 +176,13 @@ public class WeatherDataModel {
             resultMap.put("Pilvien peittävyys", cloudCoverages);
             resultMap.put("Säätilat", weatherPhenomena);
 
-            FileWriter writer = new FileWriter("weather_data.json");
-            gson.toJson(resultMap, writer);
-            writer.close();
+            try (FileWriter writer = new FileWriter("weather_data.json")) {
+                gson.toJson(resultMap, writer);
+            }
 
             System.out.println("Tiedot tallennettu tiedostoon weather_data.json");
 
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
