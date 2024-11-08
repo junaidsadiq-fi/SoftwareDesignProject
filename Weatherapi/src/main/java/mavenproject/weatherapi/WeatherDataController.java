@@ -1,6 +1,10 @@
 package mavenproject.weatherapi;
 
+import mavenproject.weatherapi.WeatherDataModel;
+import mavenproject.weatherapi.WeatherDataView;
+
 import java.util.List;
+import java.util.Map;
 
 public class WeatherDataController {
 
@@ -13,23 +17,28 @@ public class WeatherDataController {
     }
 
     public void run() {
-        // Kysy käyttäjältä paikkakunta, kuukausi, vuosi ja parametrit
-        String place = view.askForPlace();
-        int year = view.askForYear();
-        int month = view.askForMonth();
-        List<String> selectedParameters = view.askForParameters();
+        // Fetch available stations and display them for user selection
+        Map<String, String> stationMap = model.getStationMap();
+        String stationId = view.askForStationId(stationMap);
 
-        // Rakenna URL:t ja hae tiedot
-        List<String> urls = model.buildUrls(place, year, month, selectedParameters);
+        int year = view.askForYear();
+
+        // Define parameters directly in the controller
+        List<String> parameters = List.of("t2m", "ws_10min", "wg_10min", "wd_10min", "rh", "td", "r_1h", "ri_10min",
+                                          "snow_aws", "p_sea", "vis", "n_man", "wawa");
+
+        // Build URLs and fetch data
+        List<String> urls = model.buildUrls(stationId, year, parameters);
         for (String url : urls) {
             try {
                 String xmlContent = model.sendApiRequest(url);
                 model.parseAndCategorizeXML(xmlContent);
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
-        // Tallenna tulokset JSON-tiedostoon
+        // Save the results to JSON
         model.saveResultsToJson();
     }
 }

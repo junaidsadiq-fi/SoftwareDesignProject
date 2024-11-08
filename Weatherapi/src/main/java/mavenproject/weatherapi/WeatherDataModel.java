@@ -16,15 +16,14 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.nio.charset.StandardCharsets;
 import org.xml.sax.SAXException;
 
 public class WeatherDataModel {
@@ -32,7 +31,29 @@ public class WeatherDataModel {
     private static final String BASE_URL = "https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&request=getFeature&storedquery_id=fmi::observations::weather::timevaluepair";
     private static final DateTimeFormatter API_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-    // Tulokset tallennetaan näihin listoihin
+    // Predefined station data
+    private static final Map<String, String> STATION_MAP = new LinkedHashMap<>();
+
+    static {
+        STATION_MAP.put("uusimaa Porvoo Kalbådagrund", "101022");
+        STATION_MAP.put("varsinais-suomi Turku Rajakari", "100947");
+        STATION_MAP.put("satakunta Pori Tahkoluoto satama", "101267");
+        STATION_MAP.put("kanta-häme Hämeenlinna Katinen", "101150");
+        STATION_MAP.put("Pirkanmaa Virrat Äijänneva", "101310");
+        STATION_MAP.put("Päijät-Häme Asikkala Pulkkilanharju", "101185");
+        STATION_MAP.put("kymenlaakso Virolahti Koivuniemi", "101231");
+        STATION_MAP.put("etelä-karjala Lappeenranta Konnunsuo", "101246");
+        STATION_MAP.put("etelä-savo Juva Partala", "101418");
+        STATION_MAP.put("pohjois-savo Kuopio Maaninka", "101572");
+        STATION_MAP.put("pohjois-karjala Rautavaara Ylä-Luosta", "101603");
+        STATION_MAP.put("Keski-Suomi Jyväskylä lentoasema", "101339");
+        STATION_MAP.put("etelä-pohjanmaa Kauhajoki Kuja-Kokko", "101289");
+        STATION_MAP.put("pohjanmaa Vaasa Klemettilä", "101485");
+        STATION_MAP.put("keskipohjanmaa Halsua Purola", "101528");
+        STATION_MAP.put("lappi Kemijärvi lentokenttä", "101950");
+        STATION_MAP.put("Ahvenanmaa Jomala Jomalaby", "100917");
+    }
+    
     private final List<String> temperatures = new ArrayList<>();
     private final List<String> windSpeeds = new ArrayList<>();
     private final List<String> windGusts = new ArrayList<>();
@@ -47,19 +68,23 @@ public class WeatherDataModel {
     private final List<String> cloudCoverages = new ArrayList<>();
     private final List<String> weatherPhenomena = new ArrayList<>();
 
-    // API-kutsut ja tietojen haku
-    public List<String> buildUrls(String place, int year, int month, List<String> selectedParameters) {
-        String parameters = String.join(",", selectedParameters);
+    // Retrieve station map for displaying options in the View
+    public Map<String, String> getStationMap() {
+        return STATION_MAP;
+    }
 
-        LocalDateTime startTime = YearMonth.of(year, month).atDay(1).atStartOfDay();
-        LocalDateTime endTime = YearMonth.of(year, month).atEndOfMonth().atTime(23, 59, 59);
+    // Build URL list with fmisid and year split into weekly intervals
+    public List<String> buildUrls(String stationId, int year, List<String> selectedParameters) {
+        String parameters = String.join(",", selectedParameters);
+        LocalDateTime startTime = Year.of(year).atDay(1).atStartOfDay();
+        LocalDateTime endTime = YearMonth.of(year, 12).atEndOfMonth().atTime(23, 59, 59);
 
         List<String> urls = new ArrayList<>();
 
         while (startTime.isBefore(endTime)) {
             LocalDateTime nextEndTime = startTime.plusWeeks(1).isBefore(endTime) ? startTime.plusWeeks(1) : endTime;
 
-            String finalUrl = BASE_URL + "&place=" + place +
+            String finalUrl = BASE_URL + "&fmisid=" + stationId +
                     "&parameters=" + parameters +
                     "&starttime=" + startTime.format(API_FORMATTER) +
                     "&endtime=" + nextEndTime.format(API_FORMATTER);
@@ -71,7 +96,7 @@ public class WeatherDataModel {
         return urls;
     }
 
-    // Lähetä HTTP GET -kutsu ja palauta vastaus XML-muodossa
+    // Send API request to fetch weather data
     public String sendApiRequest(String url) throws Exception {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -79,16 +104,17 @@ public class WeatherDataModel {
                 .GET()
                 .build();
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
         return response.body();
     }
 
-    // Jäsennä XML-vastaus ja yhdistä tulokset
-    public void parseAndCategorizeXML(String xmlContent) {
+    // Parse XML response and categorize data into separate lists
+     public void parseAndCategorizeXML(String xmlContent) {
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            dbFactory.setAttribute("http://xml.org/sax/features/namespaces", true);
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(new ByteArrayInputStream(xmlContent.getBytes()));
+            Document doc = dBuilder.parse(new ByteArrayInputStream(xmlContent.getBytes(StandardCharsets.UTF_8)));
 
             doc.getDocumentElement().normalize();
             NodeList nList = doc.getElementsByTagName("wml2:MeasurementTimeseries");
@@ -124,7 +150,7 @@ public class WeatherDataModel {
                                     humidities.add("Aika: " + time + ", Suhteellinen kosteus: " + value + " %");
                                     break;
                                 case "obs-obs-1-1-td":
-                                    dewPoints.add("Aika: " + time + ", Kastepistelämpötila: " + value + " °C");
+                                    dewPoints.add("Aika: " + time + ", Kastepistelämpötilat: " + value + " °C");
                                     break;
                                 case "obs-obs-1-1-r_1h":
                                     rainAmounts.add("Aika: " + time + ", Sademäärä: " + value + " mm");
@@ -153,10 +179,11 @@ public class WeatherDataModel {
                 }
             }
         } catch (IOException | ParserConfigurationException | SAXException e) {
+            e.printStackTrace();
         }
     }
 
-    // Tallenna tulokset JSON-tiedostoon
+    // Save results to JSON file
     public void saveResultsToJson() {
         try {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -167,7 +194,7 @@ public class WeatherDataModel {
             resultMap.put("Tuulenpuuskat", windGusts);
             resultMap.put("Tuulen suunnat", windDirections);
             resultMap.put("Suhteellinen kosteus", humidities);
-            resultMap.put("Kastepistelämpötila", dewPoints);
+            resultMap.put("Kastepistelämpötilat", dewPoints);
             resultMap.put("Sademäärät", rainAmounts);
             resultMap.put("Sadeintensiteetit", rainIntensities);
             resultMap.put("Lumensyvyydet", snowDepths);
@@ -176,13 +203,14 @@ public class WeatherDataModel {
             resultMap.put("Pilvien peittävyys", cloudCoverages);
             resultMap.put("Säätilat", weatherPhenomena);
 
-            try (FileWriter writer = new FileWriter("weather_data.json")) {
-                gson.toJson(resultMap, writer);
-            }
+            FileWriter writer = new FileWriter("weather_data.json");
+            gson.toJson(resultMap, writer);
+            writer.close();
 
             System.out.println("Tiedot tallennettu tiedostoon weather_data.json");
 
         } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
