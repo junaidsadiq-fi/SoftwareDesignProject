@@ -11,6 +11,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -23,7 +24,6 @@ import java.util.*;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.nio.charset.StandardCharsets;
 import org.xml.sax.SAXException;
 
 public class WeatherDataModel {
@@ -31,10 +31,9 @@ public class WeatherDataModel {
     private static final String BASE_URL = "https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&request=getFeature&storedquery_id=fmi::observations::weather::timevaluepair";
     private static final DateTimeFormatter API_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-    // Predefined station data
     private static final Map<String, String> STATION_MAP = new LinkedHashMap<>();
 
-    static {
+     static {
         STATION_MAP.put("uusimaa Porvoo Kalbådagrund", "101022");
         STATION_MAP.put("varsinais-suomi Turku Rajakari", "100947");
         STATION_MAP.put("satakunta Pori Tahkoluoto satama", "101267");
@@ -54,26 +53,25 @@ public class WeatherDataModel {
         STATION_MAP.put("Ahvenanmaa Jomala Jomalaby", "100917");
     }
     
-    private final List<String> temperatures = new ArrayList<>();
-    private final List<String> windSpeeds = new ArrayList<>();
-    private final List<String> windGusts = new ArrayList<>();
-    private final List<String> windDirections = new ArrayList<>();
-    private final List<String> humidities = new ArrayList<>();
-    private final List<String> dewPoints = new ArrayList<>();
-    private final List<String> rainAmounts = new ArrayList<>();
-    private final List<String> rainIntensities = new ArrayList<>();
-    private final List<String> snowDepths = new ArrayList<>();
-    private final List<String> pressures = new ArrayList<>();
-    private final List<String> visibilities = new ArrayList<>();
-    private final List<String> cloudCoverages = new ArrayList<>();
-    private final List<String> weatherPhenomena = new ArrayList<>();
+    // Each parameter is now stored as a Map with the timestamp as key
+    private final Map<String, Double> temperatures = new LinkedHashMap<>();
+    private final Map<String, Double> windSpeeds = new LinkedHashMap<>();
+    private final Map<String, Double> windGusts = new LinkedHashMap<>();
+    private final Map<String, Double> windDirections = new LinkedHashMap<>();
+    private final Map<String, Double> humidities = new LinkedHashMap<>();
+    private final Map<String, Double> dewPoints = new LinkedHashMap<>();
+    private final Map<String, Double> rainAmounts = new LinkedHashMap<>();
+    private final Map<String, Double> rainIntensities = new LinkedHashMap<>();
+    private final Map<String, Double> snowDepths = new LinkedHashMap<>();
+    private final Map<String, Double> pressures = new LinkedHashMap<>();
+    private final Map<String, Double> visibilities = new LinkedHashMap<>();
+    private final Map<String, Double> cloudCoverages = new LinkedHashMap<>();
+    private final Map<String, Double> weatherPhenomena = new LinkedHashMap<>();
 
-    // Retrieve station map for displaying options in the View
     public Map<String, String> getStationMap() {
         return STATION_MAP;
     }
 
-    // Build URL list with fmisid and year split into weekly intervals
     public List<String> buildUrls(String stationId, int year, List<String> selectedParameters) {
         String parameters = String.join(",", selectedParameters);
         LocalDateTime startTime = Year.of(year).atDay(1).atStartOfDay();
@@ -96,8 +94,8 @@ public class WeatherDataModel {
         return urls;
     }
 
-    // Send API request to fetch weather data
     public String sendApiRequest(String url) throws Exception {
+        System.out.println(url);
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
@@ -108,8 +106,7 @@ public class WeatherDataModel {
         return response.body();
     }
 
-    // Parse XML response and categorize data into separate lists
-     public void parseAndCategorizeXML(String xmlContent) {
+    public void parseAndCategorizeXML(String xmlContent) {
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             dbFactory.setAttribute("http://xml.org/sax/features/namespaces", true);
@@ -131,47 +128,50 @@ public class WeatherDataModel {
                         if (measurementNode.getNodeType() == Node.ELEMENT_NODE) {
                             Element measurementElement = (Element) measurementNode;
                             String time = measurementElement.getElementsByTagName("wml2:time").item(0).getTextContent();
-                            String value = measurementElement.getElementsByTagName("wml2:value").item(0).getTextContent();
+                            String valueStr = measurementElement.getElementsByTagName("wml2:value").item(0).getTextContent();
+                            
+                            double value = valueStr.equals("NaN") ? Double.NaN : Double.parseDouble(valueStr);
 
+                            // Store value in the corresponding map with the timestamp as key
                             switch (paramType) {
                                 case "obs-obs-1-1-t2m":
-                                    temperatures.add("Aika: " + time + ", Lämpötila: " + value + " °C");
+                                    temperatures.put(time, value);
                                     break;
                                 case "obs-obs-1-1-ws_10min":
-                                    windSpeeds.add("Aika: " + time + ", Tuulen nopeus: " + value + " m/s");
+                                    windSpeeds.put(time, value);
                                     break;
                                 case "obs-obs-1-1-wg_10min":
-                                    windGusts.add("Aika: " + time + ", Tuulenpuuskat: " + value + " m/s");
+                                    windGusts.put(time, value);
                                     break;
                                 case "obs-obs-1-1-wd_10min":
-                                    windDirections.add("Aika: " + time + ", Tuulen suunta: " + value + " astetta");
+                                    windDirections.put(time, value);
                                     break;
                                 case "obs-obs-1-1-rh":
-                                    humidities.add("Aika: " + time + ", Suhteellinen kosteus: " + value + " %");
+                                    humidities.put(time, value);
                                     break;
                                 case "obs-obs-1-1-td":
-                                    dewPoints.add("Aika: " + time + ", Kastepistelämpötilat: " + value + " °C");
+                                    dewPoints.put(time, value);
                                     break;
                                 case "obs-obs-1-1-r_1h":
-                                    rainAmounts.add("Aika: " + time + ", Sademäärä: " + value + " mm");
+                                    rainAmounts.put(time, value);
                                     break;
                                 case "obs-obs-1-1-ri_10min":
-                                    rainIntensities.add("Aika: " + time + ", Sadeintensiteetti: " + value + " mm/h");
+                                    rainIntensities.put(time, value);
                                     break;
                                 case "obs-obs-1-1-snow_aws":
-                                    snowDepths.add("Aika: " + time + ", Lumensyvyys: " + value + " cm");
+                                    snowDepths.put(time, value);
                                     break;
                                 case "obs-obs-1-1-p_sea":
-                                    pressures.add("Aika: " + time + ", Ilmanpaine: " + value + " hPa");
+                                    pressures.put(time, value);
                                     break;
                                 case "obs-obs-1-1-vis":
-                                    visibilities.add("Aika: " + time + ", Näkyvyys: " + value + " m");
+                                    visibilities.put(time, value);
                                     break;
                                 case "obs-obs-1-1-n_man":
-                                    cloudCoverages.add("Aika: " + time + ", Pilvien peittävyys: " + value + " oktasia");
+                                    cloudCoverages.put(time, value);
                                     break;
                                 case "obs-obs-1-1-wawa":
-                                    weatherPhenomena.add("Aika: " + time + ", Säätila: " + value);
+                                    weatherPhenomena.put(time, value);
                                     break;
                             }
                         }
@@ -183,12 +183,11 @@ public class WeatherDataModel {
         }
     }
 
-    // Save results to JSON file
     public void saveResultsToJson() {
         try {
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            Gson gson = new GsonBuilder().setPrettyPrinting().serializeSpecialFloatingPointValues().create();
 
-            Map<String, Object> resultMap = new HashMap<>();
+            Map<String, Object> resultMap = new LinkedHashMap<>();
             resultMap.put("Lämpötilat", temperatures);
             resultMap.put("Tuulen nopeudet", windSpeeds);
             resultMap.put("Tuulenpuuskat", windGusts);
@@ -200,14 +199,14 @@ public class WeatherDataModel {
             resultMap.put("Lumensyvyydet", snowDepths);
             resultMap.put("Ilmanpaineet", pressures);
             resultMap.put("Näkyvyydet", visibilities);
-            resultMap.put("Pilvien peittävyys", cloudCoverages);
+            resultMap.put("Pilvien peittävyyden", cloudCoverages);
             resultMap.put("Säätilat", weatherPhenomena);
 
-            FileWriter writer = new FileWriter("weather_data.json");
+            FileWriter writer = new FileWriter("weather_data.json", StandardCharsets.UTF_8);
             gson.toJson(resultMap, writer);
             writer.close();
 
-            System.out.println("Tiedot tallennettu tiedostoon weather_data.json");
+            System.out.println("Data saved to weather_data.json");
 
         } catch (IOException e) {
             e.printStackTrace();

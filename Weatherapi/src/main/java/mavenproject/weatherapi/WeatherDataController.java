@@ -1,33 +1,37 @@
 package mavenproject.weatherapi;
 
 import mavenproject.weatherapi.WeatherDataModel;
-import mavenproject.weatherapi.WeatherDataView;
 
 import java.util.List;
-import java.util.Map;
 
 public class WeatherDataController {
 
     private final WeatherDataModel model;
-    private final WeatherDataView view;
 
-    public WeatherDataController(WeatherDataModel model, WeatherDataView view) {
+    public WeatherDataController(WeatherDataModel model) {
         this.model = model;
-        this.view = view;
     }
 
     public void run() {
-        // Fetch available stations and display them for user selection
-        Map<String, String> stationMap = model.getStationMap();
-        String stationId = view.askForStationId(stationMap);
-
-        int year = view.askForYear();
-
-        // Define parameters directly in the controller
+        String stationId = "101022"; // Set "koko maa" to get all stations' data
+        int year = 2023;
         List<String> parameters = List.of("t2m", "ws_10min", "wg_10min", "wd_10min", "rh", "td", "r_1h", "ri_10min",
                                           "snow_aws", "p_sea", "vis", "n_man", "wawa");
 
-        // Build URLs and fetch data
+        // Check if stationId is "koko maa" and fetch data for all stations
+        if (stationId.equals("koko maa")) {
+            for (String individualStationId : model.getStationMap().values()) {
+                processStationData(individualStationId, year, parameters);
+            }
+            model.calculateAndSaveAverages(); // Calculate averages for all stations
+        } else {
+            processStationData(stationId, year, parameters); // Process single station
+            model.saveResultsToJson();
+        }
+    }
+
+    private void processStationData(String stationId, int year, List<String> parameters) {
+        // Build URLs and fetch data for the specified station
         List<String> urls = model.buildUrls(stationId, year, parameters);
         for (String url : urls) {
             try {
@@ -37,8 +41,5 @@ public class WeatherDataController {
                 e.printStackTrace();
             }
         }
-
-        // Save the results to JSON
-        model.saveResultsToJson();
     }
 }
