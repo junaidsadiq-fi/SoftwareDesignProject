@@ -1,2 +1,2 @@
-target
-weather_data.json
+target/
+/weather_data.json
