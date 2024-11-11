@@ -95,7 +95,6 @@ public class WeatherDataModel {
     }
 
     public String sendApiRequest(String url) throws Exception {
-        System.out.println(url);
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
@@ -179,7 +178,6 @@ public class WeatherDataModel {
                 }
             }
         } catch (IOException | ParserConfigurationException | SAXException e) {
-            e.printStackTrace();
         }
     }
 
@@ -188,28 +186,27 @@ public class WeatherDataModel {
             Gson gson = new GsonBuilder().setPrettyPrinting().serializeSpecialFloatingPointValues().create();
 
             Map<String, Object> resultMap = new LinkedHashMap<>();
-            resultMap.put("Lämpötilat", temperatures);
-            resultMap.put("Tuulen nopeudet", windSpeeds);
-            resultMap.put("Tuulenpuuskat", windGusts);
-            resultMap.put("Tuulen suunnat", windDirections);
-            resultMap.put("Suhteellinen kosteus", humidities);
-            resultMap.put("Kastepistelämpötilat", dewPoints);
-            resultMap.put("Sademäärät", rainAmounts);
-            resultMap.put("Sadeintensiteetit", rainIntensities);
-            resultMap.put("Lumensyvyydet", snowDepths);
-            resultMap.put("Ilmanpaineet", pressures);
-            resultMap.put("Näkyvyydet", visibilities);
-            resultMap.put("Pilvien peittävyyden", cloudCoverages);
-            resultMap.put("Säätilat", weatherPhenomena);
+            resultMap.put("Temperatures", temperatures);
+            resultMap.put("windSpeeds", windSpeeds);
+            resultMap.put("windGusts", windGusts);
+            resultMap.put("windDirections", windDirections);
+            resultMap.put("humidities", humidities);
+            resultMap.put("dewPoints", dewPoints);
+            resultMap.put("rainAmounts", rainAmounts);
+            resultMap.put("rainIntensities", rainIntensities);
+            resultMap.put("snowDepths", snowDepths);
+            resultMap.put("pressures", pressures);
+            resultMap.put("visibilities", visibilities);
+            resultMap.put("cloudCoverages", cloudCoverages);
+            resultMap.put("weatherPhenomena", weatherPhenomena);
 
-            FileWriter writer = new FileWriter("weather_data.json", StandardCharsets.UTF_8);
-            gson.toJson(resultMap, writer);
-            writer.close();
+            try (FileWriter writer = new FileWriter("weather_data.json", StandardCharsets.UTF_8)) {
+                gson.toJson(resultMap, writer);
+            }
 
             System.out.println("Data saved to weather_data.json");
 
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
