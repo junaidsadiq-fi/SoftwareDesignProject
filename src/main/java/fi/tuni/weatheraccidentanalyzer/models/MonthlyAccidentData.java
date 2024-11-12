@@ -15,7 +15,12 @@ public class MonthlyAccidentData {
         return month;
     }
 
-    public List<AccidentData> getAccidents() {
-        return accidents;
+    public AccidentData getAccidentByRoadUser(String roadUser) {
+        for (AccidentData accident : accidents) {
+            if (accident.getRoadUser().equalsIgnoreCase(roadUser)) {
+                return accident;
+            }
+        }
+        return null;
     }
 }
