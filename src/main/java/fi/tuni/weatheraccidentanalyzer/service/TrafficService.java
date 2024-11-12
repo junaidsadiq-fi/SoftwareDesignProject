@@ -4,10 +4,17 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TrafficService {
-    public String getTrafficData(String yearMonth, String injuryType) {
+    public String getTrafficData(String yearMonth, String injuryType, List<String> roadUserCodes) {
         try {
+            // Convert roadUserCodes list to a JSON array string
+            String roadUserValues = roadUserCodes.stream()
+                .map(code -> "\"" + code + "\"")
+                .collect(Collectors.joining(", "));
+
             String requestBody = String.format("""
               {
                 "query": [
@@ -24,18 +31,7 @@ public class TrafficService {
                     "code": "Tienkäyttäjä",
                     "selection": {
                       "filter": "item",
-                      "values": [
-                        "SSS",
-                        "JK_SS",
-                        "PP_SS",
-                        "MO_SS",
-                        "MP_SS",
-                        "HA_SS",
-                        "LA_SS",
-                        "PA_SS",
-                        "KA_SS",
-                        "MU_SS",
-                      ]
+                      "values": [%s]
                     }
                   },
                   {
@@ -61,7 +57,7 @@ public class TrafficService {
                     "selection": {
                       "filter": "item",
                       "values": [
-                        "%s" 
+                        "%s"
                       ]
                     }
                   },
@@ -79,7 +75,7 @@ public class TrafficService {
                   "format": "json-stat2"
                 }
               }
-            """, yearMonth, injuryType);
+            """, roadUserValues, yearMonth, injuryType);
 
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://pxdata.stat.fi:443/PxWeb/api/v1/en/StatFin/ton/statfin_ton_pxt_112w.px"))
