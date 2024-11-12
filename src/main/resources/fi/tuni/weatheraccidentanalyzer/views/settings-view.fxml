@@ -32,7 +32,7 @@
                         <Font name="System Bold" size="36.0" />
                      </font>
                   </Label>
-                  <Label text="Select the options you want to include. Note that selecting more options results in longer processing times.">
+                  <Label text="Select the options you want to include. Note that selecting more options results in longer processing times. You can only select three weather data options.">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -65,47 +65,56 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <CheckBox mnemonicParsing="false" text="Temperature">
+
+                  <CheckBox fx:id="temperatureCheckBox" mnemonicParsing="false" text="Temperature">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </CheckBox>
-                  <CheckBox mnemonicParsing="false" text="Windspeed">
+
+                  <CheckBox fx:id="windspeedCheckBox" mnemonicParsing="false" text="Windspeed">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </CheckBox>
-                  <CheckBox mnemonicParsing="false" text="Relative humidity">
+
+                  <CheckBox fx:id="humidityCheckBox" mnemonicParsing="false" text="Relative humidity">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </CheckBox>
-                  <CheckBox mnemonicParsing="false" text="Dew point temperature">
+
+                  <CheckBox fx:id="dewPointCheckBox" mnemonicParsing="false" text="Dew point temperature">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </CheckBox>
-                  <CheckBox mnemonicParsing="false" text="Rainfall">
+
+                  <CheckBox fx:id="rainfallCheckBox" mnemonicParsing="false" text="Rainfall">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </CheckBox>
-                  <CheckBox mnemonicParsing="false" text="Rain intensity">
+
+                  <CheckBox fx:id="rainIntensityCheckBox" mnemonicParsing="false" text="Rain intensity">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </CheckBox>
-                  <CheckBox mnemonicParsing="false" text="Snowdepth">
+
+                  <CheckBox fx:id="snowDepthCheckBox" mnemonicParsing="false" text="Snowdepth">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </CheckBox>
-                  <CheckBox mnemonicParsing="false" text="Visibilty">
+
+                  <CheckBox fx:id="visibilityCheckBox" mnemonicParsing="false" text="Visibility">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </CheckBox>
-                  <CheckBox mnemonicParsing="false" text="Weather conditions (wawa)">
+
+                  <CheckBox fx:id="weatherConditionsCheckBox" mnemonicParsing="false" text="Weather conditions (wawa)">
                      <font>
                         <Font size="18.0" />
                      </font>
