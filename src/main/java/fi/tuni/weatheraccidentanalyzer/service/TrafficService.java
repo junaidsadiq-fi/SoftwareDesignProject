@@ -7,8 +7,21 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Service class for fetching traffic data from an external API.
+ */
 public class TrafficService {
-    public String getTrafficData(String yearMonth, String injuryType, List<String> roadUserCodes) {
+
+    /**
+     * Fetches traffic data for the specified parameters.
+     *
+     * @param yearMonth the year and month for which the traffic data is requested, in the format "YYYYMM"
+     * @param injuryType the type of injury data to fetch
+     * @param roadUserCodes the list of road user codes to include in the request
+     * @param area the area code for which the traffic data is requested
+     * @return the traffic data as a JSON string, or null if an error occurs
+     */
+    public String getTrafficData(String yearMonth, String injuryType, List<String> roadUserCodes, String area) {
         try {
             // Convert roadUserCodes list to a JSON array string
             String roadUserValues = roadUserCodes.stream()
@@ -23,7 +36,7 @@ public class TrafficService {
                     "selection": {
                       "filter": "item",
                       "values": [
-                        "MK01"
+                        "%s"
                       ]
                     }
                   },
@@ -75,7 +88,7 @@ public class TrafficService {
                   "format": "json-stat2"
                 }
               }
-            """, roadUserValues, yearMonth, injuryType);
+            """, area, roadUserValues, yearMonth, injuryType);
 
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://pxdata.stat.fi:443/PxWeb/api/v1/en/StatFin/ton/statfin_ton_pxt_112w.px"))
