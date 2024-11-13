@@ -1,2 +1,3 @@
 target/
 /weather_data.json
+/response.xml
