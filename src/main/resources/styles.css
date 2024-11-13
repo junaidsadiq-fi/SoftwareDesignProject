@@ -1,0 +1,95 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('fonts/Roboto-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Bold';
+    src: url('fonts/Roboto-Bold.ttf'); /* Load the bold font */
+}
+
+.root {
+    -fx-font-family: 'Roboto';
+    -fx-font-size: 14px;
+}
+
+.button {
+    -fx-padding: 10px;
+    -fx-cursor: hand;
+}
+
+
+/* Normal style */
+#monthButton, #yearButton {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: black;
+    -fx-background-radius: 20px;
+    -fx-font-family: 'Roboto Bold';
+    -fx-font-size: 18px;
+}
+
+/* Selection style */
+#monthButton:selected, #yearButton:selected, #monthButton:focused, #yearButton:focused {
+    -fx-background-color: black;
+    -fx-text-fill: white;
+    -fx-background-radius: 20px;
+}
+
+/* Hover style */
+#monthButton:hover, #yearButton:hover {
+    -fx-background-color: #d6d6d6; /* Slightly darker when hovered */
+    -fx-background-radius: 20px;
+}
+
+#settingsButton, #dashboardButton {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: white;
+}
+
+#settingsButton:selected, #dashboardButton:selected, #settingsButton:focused, #dashboardButton:focused {
+    -fx-background-color: #5d677a;
+    -fx-text-fill: white;
+}
+
+/* Hover style */
+#settingsButton:hover, #dashboardButton:hover {
+    -fx-background-color: #464d5c;
+}
+
+.hbox-button-group-outer {
+    -fx-background-color: transparent;
+    -fx-padding: 20px;
+    -fx-spacing: 10px;
+    -fx-margin: 20px;
+}
+
+.hbox-button-group-inner {
+    -fx-background-color: #e0e0e0; /* Grayish background */
+    -fx-background-radius: 20px;        /* Rounded corners */
+    -fx-padding: 10px;             /* Padding inside to increase height/width around buttons */
+    -fx-alignment: center;         /* Center the buttons inside */
+}
+
+/* VBox styling to provide 20px margin */
+.vbox-left {
+    -fx-padding: 0 0 0 20px;           /* Padding of 20px from the left */
+}
+
+/*#chartStyle {
+    -fx-background-color: #e0e0e0;
+    -fx-background-radius: 20px;
+}*/
+
+
+.chart {
+    -fx-background-color: #e0e0e0; /* Gray background */
+    -fx-background-radius: 20px;
+}
+
+/* Alternatively, add margin directly to the charts */
+.pie-chart, .bar-chart, .line-chart {
+    -fx-background-color: #e0e0e0; /* Gray background */
+    -fx-background-radius: 20px;
+}
