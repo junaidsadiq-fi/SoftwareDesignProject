@@ -6,8 +6,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.File;
 
-import java.net.URL;
-
 import java.io.IOException;
 
 public class WeatherAccidentAnalyzer extends Application {

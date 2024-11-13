@@ -5,7 +5,7 @@
          
   <modelVersion>4.0.0</modelVersion>
 
-  <!-- Combining groupId, artifactId, and version info -->
+  <!-- Project information -->
   <groupId>fi.tuni</groupId>
   <artifactId>WeatherAccidentAnalyzer</artifactId>
   <version>1.0-SNAPSHOT</version>
@@ -78,6 +78,11 @@
       <artifactId>bootstrapfx-core</artifactId>
       <version>0.4.0</version>
     </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20240303</version>
+    </dependency>
 
     <!-- JUnit Dependencies -->
     <dependency>
@@ -120,7 +125,6 @@
         <version>0.0.8</version>
         <executions>
           <execution>
-            <!-- Default configuration for running -->
             <id>default-cli</id>
             <configuration>
               <mainClass>fi.tuni.weatheraccidentanalyzer/fi.tuni.weatheraccidentanalyzer.models.WeatherAccidentAnalyzer</mainClass>
@@ -133,7 +137,6 @@
             </configuration>
           </execution>
           <execution>
-            <!-- Configuration for manual attach debugging -->
             <id>debug</id>
             <configuration>
               <options>
@@ -142,7 +145,6 @@
             </configuration>
           </execution>
           <execution>
-            <!-- Configuration for automatic IDE debugging -->
             <id>ide-debug</id>
             <configuration>
               <options>
@@ -151,7 +153,6 @@
             </configuration>
           </execution>
           <execution>
-            <!-- Configuration for automatic IDE profiling -->
             <id>ide-profile</id>
             <configuration>
               <options>
