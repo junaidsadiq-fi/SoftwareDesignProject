@@ -36,3 +36,7 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+# Files from the weatherapi branch
+/weather_data.json
+/response.xml
