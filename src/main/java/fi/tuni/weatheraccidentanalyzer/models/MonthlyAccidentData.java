@@ -45,6 +45,8 @@ public class MonthlyAccidentData {
      */
     public AccidentData getAccidentsByRoadUser(String roadUser) {
         for (AccidentData accident : accidents) {
+            System.out.println("accident.getRoadUser():" + accident.getRoadUser());
+            System.out.println("user got as parameter:" + roadUser);
             if (accident.getRoadUser().equalsIgnoreCase(roadUser)) {
                 return accident;
             }

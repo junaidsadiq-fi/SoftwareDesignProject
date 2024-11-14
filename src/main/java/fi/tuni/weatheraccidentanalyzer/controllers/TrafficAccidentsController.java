@@ -80,7 +80,7 @@ public class TrafficAccidentsController {
             monthlyAccidentDataList.add(monthlyAccidentData);
         }
 
-        yearlyAccidentData = new YearlyAccidentData(String.valueOf(year), monthlyAccidentDataList, area, injuryType);
+        yearlyAccidentData = new YearlyAccidentData(String.valueOf(year), monthlyAccidentDataList, area, injuryType, roadUserCodes);
     }
 
     /**

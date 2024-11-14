@@ -23,6 +23,11 @@ public class WeatherDataController {
         System.out.println("\nData saved for station " + stationId);
     }
 
+    public void fetchWeatherData(String stationId, int year, List<String> parameters) {
+        processStationData(stationId, year, parameters); // Process single station
+        model.saveResultsToJson();
+    }
+
     private void processStationData(String stationId, int year, List<String> parameters) {
         List<String> urls = model.buildUrls(stationId, year, parameters);
         int totalTasks = urls.size();

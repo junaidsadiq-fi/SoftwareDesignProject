@@ -70,16 +70,24 @@ public class MainController {
         int selectedYear = Integer.parseInt(selectedYearStr);
 
         String injuryType = "louk";
-        List<String> roadUsers = Arrays.asList("HA_SS", "KA_SS");
+        List<String> roadUsers = Arrays.asList("HA_SS", "KA_SS"); //List<String> roadUsers = Arrays.asList("HA_SS", "KA_SS");
         String area = "MK06";
         System.out.println("Fetching traffic data...");
         TrafficAccidentsController accidentController = new TrafficAccidentsController(selectedYear, injuryType, roadUsers, area);
         YearlyAccidentData yearlyAccData = accidentController.getTrafficAccidents();
         System.out.println("... done");
-        System.out.println("Fetching weather data...");
-        WeatherDataController weatherController = new WeatherDataController(weatherModel);
-        weatherController.run();
-        System.out.println("... done");
+        //System.out.println("Fetching weather data...");
+        //WeatherDataController weatherController = new WeatherDataController(weatherModel);
+
+        //weatherController.fetchWeatherData(String stationId, int year, List<String> parameters)
+
+        //System.out.println("... done");
+        updateCharts(yearlyAccData);
+    }
+
+    private void updateCharts(YearlyAccidentData yearlyAccData) {
+        pieChartModel.updatePieChart(pieChart, yearlyAccData);
+        setChartVisibility();
     }
 
     @FXML
@@ -126,8 +134,8 @@ public class MainController {
     private void setChartVisibility() {
         //messageLabel.setVisible(false);
         pieChart.setVisible(true);
-        barChart.setVisible(true);
-        lineChart.setVisible(true);
+        //barChart.setVisible(true);
+        //lineChart.setVisible(true);
     }
 
     public static SettingsModel getSettingsModel() {

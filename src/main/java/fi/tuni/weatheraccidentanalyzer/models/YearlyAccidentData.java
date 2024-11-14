@@ -27,6 +27,8 @@ public class YearlyAccidentData {
      */
     private List<MonthlyAccidentData> monthlyData;
 
+    private List<String> roadUsers;
+
     /**
      * Constructs a new YearlyAccidentData object with the specified year, monthly data, area, and injury type.
      *
@@ -35,11 +37,16 @@ public class YearlyAccidentData {
      * @param area the area where the accidents occurred
      * @param injuryType the type of injury recorded in the accident data
      */
-    public YearlyAccidentData(String year, List<MonthlyAccidentData> monthlyData, String area, String injuryType) {
+    public YearlyAccidentData(String year, List<MonthlyAccidentData> monthlyData, String area, String injuryType, List<String> roadUsers) {
         this.year = year;
         this.monthlyData = monthlyData;
         this.area = area;
         this.injuryType = injuryType;
+        this.roadUsers = roadUsers;
+    }
+
+    public List<String> getRoadUsers() {
+        return this.roadUsers;
     }
 
     /**
