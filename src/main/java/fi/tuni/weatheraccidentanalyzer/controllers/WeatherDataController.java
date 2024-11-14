@@ -1,4 +1,6 @@
-package mavenproject.weatherapi;
+package fi.tuni.weatheraccidentanalyzer.controllers;
+
+import fi.tuni.weatheraccidentanalyzer.models.WeatherDataModel;
 
 import java.util.List;
 

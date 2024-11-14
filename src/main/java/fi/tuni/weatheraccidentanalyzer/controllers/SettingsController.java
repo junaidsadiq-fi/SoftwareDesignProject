@@ -1,5 +1,7 @@
 package fi.tuni.weatheraccidentanalyzer.controllers;
 
+import fi.tuni.weatheraccidentanalyzer.models.SettingsModel;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -32,6 +34,11 @@ public class SettingsController {
 
     // USer can select only 3 of the weather options.
     private static final int MAX_SELECTION = 3;
+    private SettingsModel settingsModel = new SettingsModel();
+
+    public void setSettingsModel(SettingsModel settingsModel) {
+        this.settingsModel = settingsModel;
+    }
 
     // This method is called just before the settings view becomes active.
     // Collect all the checkboxes into a list to make operations easier.
@@ -48,6 +55,10 @@ public class SettingsController {
         for (CheckBox checkBox : checkBoxes) {
             checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> handleSelection(checkBoxes));
         }
+
+        settingsModel.setTemperatureSelected(temperatureCheckBox.isSelected());
+        settingsModel.setWindspeedSelected(windspeedCheckBox.isSelected());
+        settingsModel.setHumiditySelected(humidityCheckBox.isSelected());
     }
 
     // Handle checkboxes. Disable all the rest checkboxes if MAX_SELECTION
@@ -65,5 +76,10 @@ public class SettingsController {
             // Enable all checkboxes if less than MAX_SELECTION is selected
             checkBoxes.forEach(cb -> cb.setDisable(false));
         }
+        settingsModel.setTemperatureSelected(temperatureCheckBox.isSelected());
+    }
+
+    public SettingsModel getSettingsModel() {
+        return settingsModel;
     }
 }

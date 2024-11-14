@@ -1,4 +1,4 @@
-package mavenproject.weatherapi;
+package fi.tuni.weatheraccidentanalyzer.models;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
