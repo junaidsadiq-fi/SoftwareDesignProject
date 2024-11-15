@@ -200,7 +200,8 @@ public class WeatherDataModel {
             resultMap.put("cloudCoverages", cloudCoverages);
             resultMap.put("weatherPhenomena", weatherPhenomena);
 
-            try (FileWriter writer = new FileWriter("weather_data.json", StandardCharsets.UTF_8)) {
+            String resourcePath = "src/main/resources/weather_data.json";
+            try (FileWriter writer = new FileWriter(resourcePath, StandardCharsets.UTF_8)) {
                 gson.toJson(resultMap, writer);
             }
 

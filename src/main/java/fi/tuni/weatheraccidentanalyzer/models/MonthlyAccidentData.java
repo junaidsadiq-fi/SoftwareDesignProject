@@ -17,6 +17,10 @@ public class MonthlyAccidentData {
      */
     private List<AccidentData> accidents;
 
+    public List<AccidentData> getAccidents() {
+        return accidents;
+    }
+
     /**
      * Constructs a new MonthlyAccidentData object with the specified month and list of accidents.
      *

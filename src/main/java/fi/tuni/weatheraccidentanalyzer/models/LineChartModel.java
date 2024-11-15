@@ -5,9 +5,14 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.collections.FXCollections;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 public class LineChartModel {
-    public void updateLineChartForMonth(LineChart<String, Number> lineChart) {
+    /*public void updateLineChartForMonth(LineChart<String, Number> lineChart) {
         lineChart.getData().clear();
         lineChart.setTitle("Daily Temperatures in October");
 
@@ -66,6 +71,47 @@ public class LineChartModel {
         CategoryAxis xAxis = (CategoryAxis) lineChart.getXAxis();
         xAxis.setTickLabelRotation(45);
         xAxis.setTickLength(10);
+        xAxis.setCategories(FXCollections.observableArrayList(months));
+    }*/
+
+    public void updateLineChart(LineChart<String, Number> lineChart) {
+        // Clear existing data and set the chart title
+        lineChart.getData().clear();
+        lineChart.setTitle("Monthly Average Temperatures");
+
+        // Series for monthly average temperatures
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Monthly Average Temperatures");
+
+        // Create the JsonHelper object and get monthly data
+        List<String> params = Arrays.asList("Test");
+        JsonHelper jsonHelper = new JsonHelper(params);
+        List<Double> monthlyWeatherData;
+        try {
+            jsonHelper.calculateMonthlyAverages("Temperatures");
+            monthlyWeatherData = jsonHelper.getMonthlyAverages();
+        } catch (IOException e) {
+            throw new RuntimeException("Error calculating monthly averages", e);
+        }
+
+        // Month names for labeling the X-axis
+        String[] months = {
+                "January", "February", "March", "April", "May",
+                "June", "July", "August", "September", "October",
+                "November", "December"
+        };
+
+        // Plot monthly data
+        for (int i = 0; i < monthlyWeatherData.size(); i++) {
+            series.getData().add(new XYChart.Data<>(months[i], monthlyWeatherData.get(i)));
+        }
+
+        // Add the series to the chart
+        lineChart.getData().add(series);
+
+        // Configure the X-axis
+        CategoryAxis xAxis = (CategoryAxis) lineChart.getXAxis();
+        xAxis.setTickLabelRotation(45);
         xAxis.setCategories(FXCollections.observableArrayList(months));
     }
 }

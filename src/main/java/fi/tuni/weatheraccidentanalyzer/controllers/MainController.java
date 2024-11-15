@@ -70,23 +70,33 @@ public class MainController {
         int selectedYear = Integer.parseInt(selectedYearStr);
 
         String injuryType = "louk";
-        List<String> roadUsers = Arrays.asList("HA_SS", "KA_SS"); //List<String> roadUsers = Arrays.asList("HA_SS", "KA_SS");
+        List<String> roadUsers = Arrays.asList("HA_SS", "KA_SS", "JK_SS"); //List<String> roadUsers = Arrays.asList("HA_SS", "KA_SS");
         String area = "MK06";
         System.out.println("Fetching traffic data...");
         TrafficAccidentsController accidentController = new TrafficAccidentsController(selectedYear, injuryType, roadUsers, area);
         YearlyAccidentData yearlyAccData = accidentController.getTrafficAccidents();
         System.out.println("... done");
-        //System.out.println("Fetching weather data...");
-        //WeatherDataController weatherController = new WeatherDataController(weatherModel);
 
-        //weatherController.fetchWeatherData(String stationId, int year, List<String> parameters)
+        //String stationId = "101289"; // Use "koko maa" to get all stations' data
+        //int year = 2020;
+        //List<String> parameters = List.of("t2m", "ws_10min", "wg_10min", "wd_10min", "rh", "td", "r_1h", "ri_10min",
+        //        "snow_aws", "p_sea", "vis", "n_man", "wawa");
 
-        //System.out.println("... done");
+        System.out.println("Fetching weather data...");
+
+        String stationId = "101289";
+        List<String> weatherParameters = List.of("t2m");
+        WeatherDataController weatherController = new WeatherDataController(weatherModel);
+        //weatherController.fetchWeatherData(stationId, selectedYear, weatherParameters);
+
+        System.out.println("... done");
         updateCharts(yearlyAccData);
     }
 
     private void updateCharts(YearlyAccidentData yearlyAccData) {
         pieChartModel.updatePieChart(pieChart, yearlyAccData);
+        barChartModel.updateBarChart(barChart, yearlyAccData);
+        lineChartModel.updateLineChart(lineChart);
         setChartVisibility();
     }
 
@@ -134,8 +144,8 @@ public class MainController {
     private void setChartVisibility() {
         //messageLabel.setVisible(false);
         pieChart.setVisible(true);
-        //barChart.setVisible(true);
-        //lineChart.setVisible(true);
+        barChart.setVisible(true);
+        lineChart.setVisible(true);
     }
 
     public static SettingsModel getSettingsModel() {

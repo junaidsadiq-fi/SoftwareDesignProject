@@ -47,7 +47,7 @@ public class PieChartModel {
 
         Map<String, String> roadUserNames = new HashMap<>();
         roadUserNames.put("SSS", "Total");
-        roadUserNames.put("JK_SS", "Pedestrians");
+        roadUserNames.put("JK_SS", "Pedestrian");
         roadUserNames.put("PP_SS", "Cyclists");
         roadUserNames.put("MO_SS", "Moped");
         roadUserNames.put("MP_SS", "Motorcyclists");

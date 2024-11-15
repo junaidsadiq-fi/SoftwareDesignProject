@@ -40,3 +40,4 @@ build/
 # Files from the weatherapi branch
 /weather_data.json
 /response.xml
+/src/main/resources/weather_data.json
