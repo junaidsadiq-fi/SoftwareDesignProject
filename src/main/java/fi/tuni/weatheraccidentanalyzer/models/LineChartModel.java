@@ -12,6 +12,7 @@ import java.util.List;
 
 
 public class LineChartModel {
+    private ParameterHelper parameterHelper = new ParameterHelper();
     /*public void updateLineChartForMonth(LineChart<String, Number> lineChart) {
         lineChart.getData().clear();
         lineChart.setTitle("Daily Temperatures in October");
@@ -74,25 +75,13 @@ public class LineChartModel {
         xAxis.setCategories(FXCollections.observableArrayList(months));
     }*/
 
-    public void updateLineChart(LineChart<String, Number> lineChart) {
+    public void updateLineChart(LineChart<String, Number> lineChart, List<String> weatherParams) {
         // Clear existing data and set the chart title
         lineChart.getData().clear();
-        lineChart.setTitle("Monthly Average Temperatures");
+        lineChart.setTitle("Monthly Averages for Selected Parameters");
 
-        // Series for monthly average temperatures
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Monthly Average Temperatures");
-
-        // Create the JsonHelper object and get monthly data
-        List<String> params = Arrays.asList("Test");
-        JsonHelper jsonHelper = new JsonHelper(params);
-        List<Double> monthlyWeatherData;
-        try {
-            jsonHelper.calculateMonthlyAverages("Temperatures");
-            monthlyWeatherData = jsonHelper.getMonthlyAverages();
-        } catch (IOException e) {
-            throw new RuntimeException("Error calculating monthly averages", e);
-        }
+        // Create the JsonHelper object (shared across iterations)
+        JsonHelper jsonHelper = new JsonHelper();
 
         // Month names for labeling the X-axis
         String[] months = {
@@ -101,13 +90,31 @@ public class LineChartModel {
                 "November", "December"
         };
 
-        // Plot monthly data
-        for (int i = 0; i < monthlyWeatherData.size(); i++) {
-            series.getData().add(new XYChart.Data<>(months[i], monthlyWeatherData.get(i)));
-        }
+        try {
+            // Loop through each weather parameter
+            for (String param : weatherParams) {
+                String paramName = parameterHelper.getWeatherParamNameFromCode(param);
+                if (!paramName.isEmpty()) {
+                    // Calculate monthly averages for the current parameter
+                    List<Double> monthlyWeatherData = jsonHelper.calculateMonthlyAverages(paramName);
+                    //List<Double> monthlyWeatherData = jsonHelper.getMonthlyAverage();
 
-        // Add the series to the chart
-        lineChart.getData().add(series);
+                    // Create a series for the current parameter
+                    XYChart.Series<String, Number> series = new XYChart.Series<>();
+                    series.setName("Monthly Average " + paramName);
+
+                    // Plot data for the current series
+                    for (int i = 0; i < monthlyWeatherData.size(); i++) {
+                        series.getData().add(new XYChart.Data<>(months[i], monthlyWeatherData.get(i)));
+                    }
+
+                    // Add the series to the chart
+                    lineChart.getData().add(series);
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error calculating monthly averages", e);
+        }
 
         // Configure the X-axis
         CategoryAxis xAxis = (CategoryAxis) lineChart.getXAxis();

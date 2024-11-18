@@ -85,18 +85,18 @@ public class MainController {
         System.out.println("Fetching weather data...");
 
         String stationId = "101289";
-        List<String> weatherParameters = List.of("t2m");
+        List<String> weatherParameters = List.of("t2m", "ws_10min");
         WeatherDataController weatherController = new WeatherDataController(weatherModel);
         //weatherController.fetchWeatherData(stationId, selectedYear, weatherParameters);
 
         System.out.println("... done");
-        updateCharts(yearlyAccData);
+        updateCharts(yearlyAccData, weatherParameters);
     }
 
-    private void updateCharts(YearlyAccidentData yearlyAccData) {
+    private void updateCharts(YearlyAccidentData yearlyAccData, List<String> weatherParams) {
         pieChartModel.updatePieChart(pieChart, yearlyAccData);
         barChartModel.updateBarChart(barChart, yearlyAccData);
-        lineChartModel.updateLineChart(lineChart);
+        lineChartModel.updateLineChart(lineChart, weatherParams);
         setChartVisibility();
     }
 
