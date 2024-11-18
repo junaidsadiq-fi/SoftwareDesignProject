@@ -87,7 +87,7 @@ public class MainController {
         String stationId = "101289";
         List<String> weatherParameters = List.of("t2m", "ws_10min");
         WeatherDataController weatherController = new WeatherDataController(weatherModel);
-        //weatherController.fetchWeatherData(stationId, selectedYear, weatherParameters);
+        weatherController.fetchWeatherData(stationId, selectedYear, weatherParameters);
 
         System.out.println("... done");
         updateCharts(yearlyAccData, weatherParameters);
