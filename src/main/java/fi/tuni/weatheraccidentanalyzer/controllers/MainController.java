@@ -69,9 +69,21 @@ public class MainController {
         String selectedYearStr = yearComboBox.getValue();
         int selectedYear = Integer.parseInt(selectedYearStr);
 
+        LocationItem selectedLocation = settingsModel.getLocationSelection();
+        String area = "MK06";
+        String stationId = "101289";
+
+        if (!selectedLocation.getWeatherApiCode().isEmpty() && !selectedLocation.getTrafficApiCode().isEmpty()) {
+            area = selectedLocation.getTrafficApiCode();
+            stationId = selectedLocation.getWeatherApiCode();
+        }
+
+        System.out.println("SELECTED AREA: " + area);
+        System.out.println("SELECTED STATIONID: " + stationId);
+
         String injuryType = "louk";
         List<String> roadUsers = Arrays.asList("HA_SS", "KA_SS", "JK_SS"); //List<String> roadUsers = Arrays.asList("HA_SS", "KA_SS");
-        String area = "MK06";
+
         System.out.println("Fetching traffic data...");
         TrafficAccidentsController accidentController = new TrafficAccidentsController(selectedYear, injuryType, roadUsers, area);
         YearlyAccidentData yearlyAccData = accidentController.getTrafficAccidents();
@@ -84,8 +96,8 @@ public class MainController {
 
         System.out.println("Fetching weather data...");
 
-        String stationId = "101289";
-        List<String> weatherParameters = List.of("t2m", "ws_10min");
+        List<String> weatherParameters = settingsModel.getSelected();
+        System.out.println("SELECTED WEATHER PARAMS: " + weatherParameters);
         WeatherDataController weatherController = new WeatherDataController(weatherModel);
         weatherController.fetchWeatherData(stationId, selectedYear, weatherParameters);
 

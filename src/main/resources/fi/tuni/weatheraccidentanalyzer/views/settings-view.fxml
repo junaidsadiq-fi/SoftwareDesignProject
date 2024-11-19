@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -8,6 +9,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1920.0" style="-fx-background-color: #c3c3c3;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.tuni.weatheraccidentanalyzer.controllers.SettingsController">
     <left>
@@ -66,59 +69,95 @@
                      </font>
                   </Label>
 
-                  <CheckBox fx:id="temperatureCheckBox" mnemonicParsing="false" text="Temperature">
+                  <CheckBox fx:id="temperatureCheckBox" mnemonicParsing="false" text="Temperatures">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </CheckBox>
 
-                  <CheckBox fx:id="windspeedCheckBox" mnemonicParsing="false" text="Windspeed">
+                  <CheckBox fx:id="windSpeedCheckBox" mnemonicParsing="false" text="windSpeeds">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </CheckBox>
 
-                  <CheckBox fx:id="humidityCheckBox" mnemonicParsing="false" text="Relative humidity">
+                  <CheckBox fx:id="windGustCheckBox" mnemonicParsing="false" text="windGusts">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </CheckBox>
 
-                  <CheckBox fx:id="dewPointCheckBox" mnemonicParsing="false" text="Dew point temperature">
+                  <CheckBox fx:id="windDirectionCheckBox" mnemonicParsing="false" text="windDirections">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </CheckBox>
 
-                  <CheckBox fx:id="rainfallCheckBox" mnemonicParsing="false" text="Rainfall">
+                  <CheckBox fx:id="humidityCheckBox" mnemonicParsing="false" text="humidities">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </CheckBox>
 
-                  <CheckBox fx:id="rainIntensityCheckBox" mnemonicParsing="false" text="Rain intensity">
+                  <CheckBox fx:id="dewPointCheckBox" mnemonicParsing="false" text="dewPoints">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </CheckBox>
 
-                  <CheckBox fx:id="snowDepthCheckBox" mnemonicParsing="false" text="Snowdepth">
+                  <CheckBox fx:id="rainAmountCheckBox" mnemonicParsing="false" text="rainAmounts">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </CheckBox>
 
-                  <CheckBox fx:id="visibilityCheckBox" mnemonicParsing="false" text="Visibility">
+                  <CheckBox fx:id="rainIntensityCheckBox" mnemonicParsing="false" text="rainIntensities">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </CheckBox>
 
-                  <CheckBox fx:id="weatherConditionsCheckBox" mnemonicParsing="false" text="Weather conditions (wawa)">
+                  <CheckBox fx:id="snowDepthCheckBox" mnemonicParsing="false" text="snowDepths">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </CheckBox>
+
+                  <CheckBox fx:id="pressureCheckBox" mnemonicParsing="false" text="pressures">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </CheckBox>
+
+                  <CheckBox fx:id="visibilityCheckBox" mnemonicParsing="false" text="visibilities">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </CheckBox>
+
+                  <CheckBox fx:id="cloudCoverageCheckBox" mnemonicParsing="false" text="cloudCoverages">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </CheckBox>
+
+                  <CheckBox fx:id="weatherPhenomenaCheckBox" mnemonicParsing="false" text="weatherPhenomena">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </CheckBox>
+
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
+               <children>
+                  <Label text="Location selection">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="locationSelection" prefWidth="150.0">
+                  </ComboBox>
                </children>
             </VBox>
          </children>
