@@ -19,7 +19,7 @@
 <?import java.lang.String?>
 
 <?import javafx.scene.layout.StackPane?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1920.0" style="-fx-background-color: #c3c3c3;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.tuni.weatheraccidentanalyzer.controllers.MainController">
+<BorderPane maxHeight="800.0" maxWidth="1200.0" style="-fx-background-color: #c3c3c3;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.tuni.weatheraccidentanalyzer.controllers.MainController">
     <left>
         <fx:include source="sidebar.fxml"/>
     </left>

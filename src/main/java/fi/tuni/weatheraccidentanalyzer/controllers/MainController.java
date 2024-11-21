@@ -35,37 +35,24 @@ public class MainController {
     private final PieChartModel pieChartModel = new PieChartModel();
     private final LineChartModel lineChartModel = new LineChartModel();
 
-    //private SettingsController settingsController;
     private static SettingsModel settingsModel = new SettingsModel();
     private WeatherDataModel weatherModel = new WeatherDataModel();
-    //private final TrafficAccidentsController accidentController = new TrafficAccidentsController();
 
+    private Stage stage;
 
-    /*@FXML
-    private void handleMonthButtonClick() {
-        System.out.println("Month button clicked!");
-        barChartModel.updateBarChartForMonth(barChart);
-        pieChartModel.updatePieChartForMonth(pieChart);
-        lineChartModel.updateLineChartForMonth(lineChart);
+    public void setStage(Stage stage) {
+        this.stage = stage;
+        this.stage.setWidth(1200);
+        this.stage.setHeight(800);
+    }
 
-        setChartVisibility();
-    }*/
-
-    /*@FXML
-    private void handleYearButtonClick() {
-        System.out.println("Year button clicked!");
-        barChartModel.updateBarChartForYear(barChart);
-        pieChartModel.updatePieChartForYear(pieChart);
-        lineChartModel.updateLineChartForYear(lineChart);
-
-        setChartVisibility();
-
-    }*/
+    @FXML
+    public void initialize() {
+        // Initialization code here
+    }
 
     @FXML
     private void handleFetchButtonClick() {
-        // Take value from selection field and settings checkboxes.
-        // TrafficAccidentsController(Integer year, String injuryType, List<String> roadUserCodes, String area)
         String selectedYearStr = yearComboBox.getValue();
         int selectedYear = Integer.parseInt(selectedYearStr);
 
@@ -82,17 +69,12 @@ public class MainController {
         System.out.println("SELECTED STATIONID: " + stationId);
 
         String injuryType = "louk";
-        List<String> roadUsers = Arrays.asList("HA_SS", "KA_SS", "JK_SS"); //List<String> roadUsers = Arrays.asList("HA_SS", "KA_SS");
+        List<String> roadUsers = Arrays.asList("HA_SS", "KA_SS", "JK_SS");
 
         System.out.println("Fetching traffic data...");
         TrafficAccidentsController accidentController = new TrafficAccidentsController(selectedYear, injuryType, roadUsers, area);
         YearlyAccidentData yearlyAccData = accidentController.getTrafficAccidents();
         System.out.println("... done");
-
-        //String stationId = "101289"; // Use "koko maa" to get all stations' data
-        //int year = 2020;
-        //List<String> parameters = List.of("t2m", "ws_10min", "wg_10min", "wd_10min", "rh", "td", "r_1h", "ri_10min",
-        //        "snow_aws", "p_sea", "vis", "n_man", "wawa");
 
         System.out.println("Fetching weather data...");
 
@@ -154,7 +136,6 @@ public class MainController {
     }
 
     private void setChartVisibility() {
-        //messageLabel.setVisible(false);
         pieChart.setVisible(true);
         barChart.setVisible(true);
         lineChart.setVisible(true);
